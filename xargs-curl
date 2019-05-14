@@ -8,12 +8,27 @@ set -o pipefail
 # set -o xtrace
 
 
+
+
+# ======================================
+# Requirements
+# ======================================
+
+# Check on Requirements
+function require  {
+	command -v "${1}" >/dev/null 2>&1 || e_error "$(printf "Program '%s' required, but it's not installed" "${1}")"
+}
+
+require mktemp
+require xargs
+require curl
+
+
+
 # ======================================
 # Configuration
 # ======================================
 
-# Temp file where the concatenated files are written to
-declare concatenation_list=$(mktemp)
 
 # The default HTTP method
 declare http_method="HEAD"
@@ -22,7 +37,7 @@ declare http_method="HEAD"
 declare http_status=200
 
 # Number of xargs processes to run in parallel
-declare xargs_processes=1
+declare xargs_processes=0
 
 # Verbosity mode
 declare -i verbose=0
@@ -98,19 +113,6 @@ function e_success () {
 
 
 
-
-
-# ======================================
-# Requirements
-# ======================================
-
-# Check on Requirements
-function require  {
-	command -v "${1}" >/dev/null 2>&1 || e_error "$(printf "Program '%s' required, but it's not installed" "${1}")"
-}
-
-require xargs
-require curl
 
 
 
@@ -266,6 +268,7 @@ done
 # Business
 # ======================================
 
+declare concatenation_list=$(mktemp)
 
 # Parameters for CURL with xargs.
 declare -a xargs_arguments=()
