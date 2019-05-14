@@ -297,7 +297,6 @@ done
 echo;
 e_info "Health-check URLs in file '${concatenation_list}' using '${http_method}'"
 
-start=`date +%s`
 if [ $verbose -gt 0 ]; then
 	echo;
 	xargs "${xargs_arguments[@]}" < $concatenation_list
@@ -306,10 +305,8 @@ else
 	echo;
 	xargs "${xargs_arguments[@]}" < $concatenation_list | grep -v ^${http_status}
 fi
-end=`date +%s`
-runtime=$((end-start))
 
 echo;
-e_success "Finished in ${runtime} seconds";
+e_success "Finished.";
 echo;
 
